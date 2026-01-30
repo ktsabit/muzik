@@ -10,7 +10,7 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Commands {
-    /// Scan a directory for music
+    /// Manage root directories
     Root {
         #[command(subcommand)]
         command: RootCommands,
@@ -29,5 +29,9 @@ pub enum RootCommands {
     Remove {
         id: i64,
     },
+    /// Scan all roots
+    Scan {
+        root_id: Option<i64>,
+    }
 }
 

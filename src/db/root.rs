@@ -10,6 +10,13 @@ pub async fn get_roots(pool: &SqlitePool) -> anyhow::Result<Vec<Root>> {
     Ok(roots)
 }
 
+pub async fn get_root(pool: &SqlitePool, id: i64) -> anyhow::Result<Root> {
+    let root = sqlx::query_as!(Root, "SELECT id, path FROM roots WHERE id = ?1", id)
+        .fetch_one(pool)
+        .await?;
+    Ok(root)
+}
+
 pub async fn add_root(pool: &SqlitePool, path: PathBuf) -> anyhow::Result<i64> {
 
     let path_str = path.to_string_lossy().to_string();

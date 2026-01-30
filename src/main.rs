@@ -1,4 +1,4 @@
-
+mod scanner;
 mod db;
 mod domain;
 mod cli;

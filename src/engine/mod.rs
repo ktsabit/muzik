@@ -2,6 +2,7 @@ use sqlx::SqlitePool;
 use std::path::PathBuf;
 
 use crate::domain::Root;
+use crate::scanner::walker;
 
 pub struct MuzikEngine {
     #[allow(dead_code)]
@@ -27,6 +28,12 @@ impl MuzikEngine {
 
     pub async fn remove_root(&self, id: i64) -> anyhow::Result<()> {
         crate::db::root::remove_root(&self.pool, id).await?;
+        Ok(())
+    }
+
+    pub async fn scan_root(&self, id: i64) -> anyhow::Result<()> {
+        let root = crate::db::root::get_root(&self.pool, id).await?;
+        let _ =walker::walkdir(&root.path);
         Ok(())
     }
 }

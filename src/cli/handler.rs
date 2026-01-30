@@ -24,6 +24,19 @@ pub async fn handle_root(command: RootCommands, engine: MuzikEngine) -> anyhow::
         RootCommands::Remove { id } => {
             engine.remove_root(id).await?;
             println!("Removed root: {}", id)
+        },
+        RootCommands::Scan { root_id } => {
+            match root_id {
+                Some(id) => {
+                    engine.scan_root(id).await?;
+                },
+                None => {
+                    let roots = engine.list_roots().await?;
+                    for root in roots {
+                        engine.scan_root(root.id).await?;
+                    }
+                }
+            }
         }
     }
     Ok(())
